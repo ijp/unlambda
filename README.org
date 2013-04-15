@@ -1,1 +1,6 @@
 * Experiments with Unlambda
+
+A place to keep experiments with the [[http://www.madore.org/~david/programs/unlambda/][Unlambda programming language]].
+
+Currently just a lua interpreter.
+I will be adding programs, and a Guile language
