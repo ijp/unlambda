@@ -2,6 +2,9 @@
 -- written in Continuation Passing Style to accommodate Unlambda's 'c'
 -- primitive. If you haven't seen code written like this before, don't
 -- hate me, usually you'd have the machine do the converting for you.
+--
+-- Note: non-continuation functions will not call their arguments
+-- directly, as 'delay' messes everything up
 
 function k (x, cont)
    local function inner (y, cont)
@@ -18,9 +21,9 @@ function s (f, cont)
             local function gcont(a)
                return f(a, cont)
             end
-            return g(x, gcont)
+            return evapply(g, x, gcont)
          end
-         return f(x, fcont)
+         return evapply(f, x, fcont)
       end
       return cont(inner2)
    end
@@ -39,7 +42,7 @@ function callcc (f, cont)
    local function inner (x, cont2)
       return cont(x)
    end
-   return f(inner, cont)
+   return evapply(f, inner, cont)
 end
 
 function display (c)
@@ -79,7 +82,11 @@ function evapply(f, a, cont)
 end
 
 function eval(tree, cont)
-   if tree.type == 'apply' then
+   if type(tree) == 'function' then
+      -- This can occur sometimes due to the 'delay' type, but it
+      -- kinda smells. I've obviously done something wrong.
+      return cont(tree)
+   elseif tree.type == 'apply' then
       return evapply(tree.func, tree.arg, cont)
    elseif tree.type == 's' then
       return cont(s)
