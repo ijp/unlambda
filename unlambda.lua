@@ -130,6 +130,8 @@ function parse(file)
          return {type='c'}
       elseif char == 'R' or char == 'r' then
          return {type='print', c='\n'}
+      elseif char == '#' then
+         file:read("*l")
       end
    end
 end
