@@ -20,7 +20,7 @@ function s (f, cont)
             end
             return g(x, gcont)
          end
-         return f(x, fcont);
+         return f(x, fcont)
       end
       return cont(inner2)
    end
@@ -68,9 +68,9 @@ function evapply(f, a, cont)
          return fval(aval, cont)
       end
       if type(fval) == 'function' then
-         return eval(a, acont);
+         return eval(a, acont)
       elseif type(fval) == 'table' and fval.type == 'delay' then
-         return delay(a,cont);
+         return delay(a,cont)
       else
          error()
       end
@@ -80,21 +80,21 @@ end
 
 function eval(tree, cont)
    if tree.type == 'apply' then
-      return evapply(tree.func, tree.arg, cont);
+      return evapply(tree.func, tree.arg, cont)
    elseif tree.type == 's' then
-      return cont(s);
+      return cont(s)
    elseif tree.type == 'k' then
-      return cont(k);
+      return cont(k)
    elseif tree.type == 'i' then
-      return cont(i);
+      return cont(i)
    elseif tree.type == 'v' then
       return cont(void)
    elseif tree.type == 'print' then
-      return cont(display(tree.c));
+      return cont(display(tree.c))
    elseif tree.type == 'delay' then
-      return cont(tree);
+      return cont(tree)
    elseif tree.type == 'c' then
-      return cont(callcc);
+      return cont(callcc)
    else
       error()
    end
